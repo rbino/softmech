@@ -2,7 +2,10 @@
 from pyxhook import HookManager
 from random import choice
 import os
-from subprocess import Popen
+from sdl2 import *
+from sdl2.ext.compat import byteify
+from sdl2.sdlmixer import *
+
 
 sounddir = "CMStormTKBlue"
 pressed = {}
@@ -20,14 +23,16 @@ def handle_event_up(event):
 
 
 def playrandom(sounds):
-    Popen(['aplay', '-q', sounddir + os.sep + choice(sounds)])
+    Mix_PlayChannel(-1, choice(sounds), 0)
 
 
+SDL_Init(SDL_INIT_AUDIO)
+Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 1, 256)
 sounds = os.listdir(sounddir)
-downs = [f
+downs = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
          for f in sounds
          if "down.wav" in f]
-ups = [f
+ups = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
        for f in sounds
        if "up.wav" in f]
 
