@@ -5,7 +5,7 @@ Use it to annoy people when you don't have a mechanical keyboard with you.
 ### Dependencies
 To install dependencies (on Debian):
 ```sh
-$ sudo apt-get install python-xlib
+$ sudo apt-get install python-xlib python-sdl2
 ```
 ### Launching
 ```sh
