@@ -9,7 +9,6 @@ $ sudo apt-get install python-xlib
 ```
 ### Launching
 ```sh
-$ chmod +x softmech.py
 $ ./softmech.py
 ```
 ### Additional sounds
