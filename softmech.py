@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 from pyxhook import HookManager
-import thread
 from random import choice
 import os
+from subprocess import Popen
 
 sounddir="CMStormTKBlue"
 pressed={}
@@ -17,7 +17,7 @@ def handle_event_up (event):
   pressed[event.Key] = False
 
 def playrandom(sounds):
-  thread.start_new_thread(os.system,("cat " + sounddir + os.sep + choice(sounds) + " | aplay -q -f cd",))
+  Popen(['aplay', '-q', sounddir + os.sep + choice(sounds)])
 
 sounds = os.listdir(sounddir)
 downs = [f for f in sounds if "down.wav" in f]
