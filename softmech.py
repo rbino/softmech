@@ -13,12 +13,22 @@ pressed = {}
 
 def handle_event_down(event):
     if (event.Key not in pressed or not pressed[event.Key]):
-        playrandom(downs)
+        if event.Key == "space":
+            playrandom(spacedowns)
+        elif event.Key == "Return":
+            playrandom(returndowns)
+        else:
+            playrandom(downs)
     pressed[event.Key] = True
 
 
 def handle_event_up(event):
-    playrandom(ups)
+    if event.Key == "space":
+        playrandom(spaceups)
+    elif event.Key == "Return":
+        playrandom(returnups)
+    else:
+        playrandom(ups)
     pressed[event.Key] = False
 
 
@@ -35,6 +45,18 @@ downs = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
 ups = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
        for f in sounds
        if "up.wav" in f]
+spacedowns = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
+         for f in sounds
+         if "down_space.wav" in f]
+spaceups = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
+       for f in sounds
+       if "up_space.wav" in f]
+returndowns = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
+         for f in sounds
+         if "down_return.wav" in f]
+returnups = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
+       for f in sounds
+       if "up_return.wav" in f]
 
 hm = HookManager()
 hm.HookKeyboard()
