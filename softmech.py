@@ -1,35 +1,43 @@
 #!/usr/bin/env python
-from pyxhook import HookManager
-from random import choice
 import os
 from sdl2 import *
 from sdl2.ext.compat import byteify
 from sdl2.sdlmixer import *
 
+import keyboard
+from random import choice
+import time
 
 sounddir = "CMStormTKBlue"
 pressed = {}
 
 
+
+def handle_event(event):
+    if event.event_type == keyboard.KEY_UP:
+        handle_event_up(event)
+    else:
+        handle_event_down(event)
+
 def handle_event_down(event):
-    if (event.Key not in pressed or not pressed[event.Key]):
-        if event.Key == "space":
+    if (event.name not in pressed or not pressed[event.name]):
+        if event.name == "space":
             playrandom(spacedowns)
-        elif event.Key == "Return":
+        elif event.name == "backspace":
             playrandom(returndowns)
         else:
             playrandom(downs)
-    pressed[event.Key] = True
+    pressed[event.name] = True
 
 
 def handle_event_up(event):
-    if event.Key == "space":
+    if event.name == "space":
         playrandom(spaceups)
-    elif event.Key == "Return":
+    elif event.name == "backspace":
         playrandom(returnups)
     else:
         playrandom(ups)
-    pressed[event.Key] = False
+    pressed[event.name] = False
 
 
 def playrandom(sounds):
@@ -58,12 +66,10 @@ returnups = [Mix_LoadWAV(byteify(sounddir + os.sep + f, 'utf-8'))
        for f in sounds
        if "up_return.wav" in f]
 
-hm = HookManager()
-hm.HookKeyboard()
-hm.KeyDown = handle_event_down
-hm.KeyUp = handle_event_up
+keyboard.hook(handle_event, suppress=False)
 
 try:
-    hm.run()
-except:
+    while True:
+        time.sleep(1)
+except KeyboardInterrupt:
     print("\nClick clack! Bye!")
